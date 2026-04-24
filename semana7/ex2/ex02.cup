@@ -1,0 +1,32 @@
+import java_cup.runtime.*;
+
+terminal PTVIRG, MAIS, MENOS, DIV, MULT, MOD, ABRE, FECHA;
+terminal Double INTEIRO;
+non terminal Double expr_list, expr_ptv;
+non terminal Double expr;
+non terminal Double fator;
+
+expr_list ::= expr_list expr_ptv
+            | expr_ptv;
+
+expr_ptv ::= expr:e {: System.out.println("Resultado = " + e); :} PTVIRG;
+
+expr ::=  fator:n MAIS expr:e
+            {: RESULT = n + e; :}
+        | fator:n MENOS expr:e
+            {: RESULT = n - e; :}
+        | fator:n MULT expr:e
+            {: RESULT = new Double(n.doubleValue() * e.doubleValue()); :}
+        | fator:n DIV expr:e
+            {: RESULT = new Double(n.doubleValue() / e.doubleValue()); :}
+        | fator:n MOD expr:e
+            {: RESULT = new Double(n.doubleValue() % e.doubleValue()); :}
+        | fator:n
+            {: RESULT = n; :}
+        ;
+
+fator ::= INTEIRO:n
+            {: RESULT = new Double(n.doubleValue()); :}
+        | ABRE expr:e FECHA
+            {: RESULT = e; :}
+        ;

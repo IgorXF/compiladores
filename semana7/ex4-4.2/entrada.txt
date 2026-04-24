@@ -1,0 +1,1 @@
+GANHA 10 + PERDE 3 + GANHA 2;

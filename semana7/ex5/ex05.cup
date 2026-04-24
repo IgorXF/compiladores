@@ -1,0 +1,52 @@
+import java_cup.runtime.*;
+
+terminal PTVIRG, MAIS, MENOS, DIV, MULT, MOD, ABRE, FECHA;
+terminal Double INTEIRO;
+non terminal Double expr_list, expr_ptv;
+non terminal Double expr;
+non terminal Double fator;
+
+expr_list ::= expr_list expr_ptv
+            | expr_ptv;
+
+expr_ptv ::= expr:e
+            {:
+                if (!Double.isNaN(e)) {
+                    System.out.println("Resultado = " + e);
+                }
+            :}
+            PTVIRG;
+
+expr ::=  fator:n MAIS expr:e
+            {: RESULT = n + e; :}
+        | fator:n MENOS expr:e
+            {: RESULT = n - e; :}
+        | fator:n MULT expr:e
+            {: RESULT = n * e; :}
+        | fator:n DIV expr:e
+            {:
+                if (e == 0.0) {
+                    System.out.println("Erro: divisão por zero!");
+                    RESULT = Double.NaN;
+                } else {
+                    RESULT = n / e;
+                }
+            :}
+        | fator:n MOD expr:e
+            {:
+                if (n != Math.floor(n) || e != Math.floor(e)) {
+                    System.out.println("Erro: MOD só aceita valores inteiros! (" + n + " MOD " + e + ")");
+                    RESULT = Double.NaN;
+                } else {
+                    RESULT = n % e;
+                }
+            :}
+        | fator:n
+            {: RESULT = n; :}
+        ;
+
+fator ::= INTEIRO:n
+            {: RESULT = n; :}
+        | ABRE expr:e FECHA
+            {: RESULT = e; :}
+        ;
