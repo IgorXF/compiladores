@@ -1,0 +1,19 @@
+import java_cup.runtime.*;
+
+/* TERMINAIS */
+terminal PTVIRG, MAIS, MENOS, INTEIRO, MULT, DIV, MOD;
+
+/* NÃO TERMINAIS */
+non terminal expr_list, expr_ptv, expr;
+
+expr_list ::=   expr_list expr_ptv
+						  | expr_ptv;
+
+expr_ptv ::=  expr PTVIRG;
+
+expr ::=  INTEIRO MAIS expr
+				| INTEIRO MENOS expr
+				| INTEIRO MULT expr
+				| INTEIRO DIV expr
+				| INTEIRO MOD expr
+			  | INTEIRO;
